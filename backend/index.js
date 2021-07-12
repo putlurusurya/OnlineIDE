@@ -74,6 +74,17 @@ const outputPath = path.join(__dirname, "outputs");
 if (!fs.existsSync(outputPath)) {
   fs.mkdirSync(outputPath, { recursive: true });
 }
+
+//file generation function
+const generateFile = async(format,content)=>{
+  const jobId= uuid();
+  console.log("jobid in generate: ",jobId);
+  const filename= `${jobId}.${format}`;
+  const filepath=path.join(codesDirectory,filename);
+  await fs.writeFileSync(filepath,content);
+  return filepath;
+}
+
 //Executing codes functions
 
 const executeCpp = (filepath) => {
@@ -103,16 +114,6 @@ const executePy = (filepath) => {
       );
     });
   };
-
-//file generation function
-const generateFile = async(format,content)=>{
-    const jobId= uuid();
-    console.log("jobid in generate: ",jobId);
-    const filename= `${jobId}.${format}`;
-    const filepath=path.join(codesDirectory,filename);
-    await fs.writeFileSync(filepath,content);
-    return filepath;
-}
 
 //creating and adding to queues
 const jobQueue = new Queue('job-runner-queue');
@@ -145,14 +146,18 @@ jobQueue.on('failed',(error)=>{
     console.log(error.data.id,"failed",error.failedReason);
 });
 
+
+
 app.use(express.static(__dirname + '/../client'));
 
 app.listen(port,()=>{
     console.log(`Listening to port ${port}`);
 });
 
+
+// routes
 app.get('/' ,  (req , res )=> {
-	console.log("hello");
+	console.log(`connected to port: ${port} `);
 });
 
 app.get('/status',async (req,res)=>{

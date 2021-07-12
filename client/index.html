@@ -5,12 +5,27 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" href="#">
-    <link rel="stylesheet" href="https://bootswatch.com/5/morph/bootstrap.min.css">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://bootswatch.com/5/morph/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Online IDE</title>
+    <style type="text/css" media="screen">
+        #parent {
+            text-align:center;
+            height:400px;
+            width:100%;
+        }
+        #editor{
+          position: relative;
+          top:5%;
+          height: 90%;
+          width: 90%;
+          bottom: 5%;
+          left: 5%;
+          right: 5%;  
+        }
+    </style>
   </head>
   <body>
     <center>
@@ -20,23 +35,23 @@
             <h1>Online IDE</h1>
             <div class="form-group">
               <label for="exampleSelect1" class="form-label mt-4">Language</label>
-              <select class="form-select"  id="exampleSelect1" name="lang" ng-model="lang">
+              <select class="form-select"   id="exampleSelect1" name="lang" ng-model="lang">
                 <option value="cpp">Cpp</option>
                 <option value="java">Java</option>  
-                <option value="py">Python</option> 
+                <option value="py" selected="selected">Python</option> 
               </select>
             </div>
-            <div class="form-group">
-              <label for="exampleTextarea" class="form-label mt-4">Code</label>
-              <textarea class="form-control" id="exampleTextarea" rows="15" ng-model="code"></textarea>
+            <div id="parent">
+              <div id="editor">print("Hello World")</div>
             </div>
+            
             <div>
-              <input type="button" class="btn btn-outline-primary" value="submit" ng-click="postdata(lang,code)"/><br></br>
+              <input type="button" class="btn btn-outline-primary"  value="submit" ng-click="postdata(lang,code)"/><br></br>
           
             </div>
 
           </div>
-          <div ng-class="class"  id="outputField" style="max-width: 50rem;" >
+          <div ng-class="class"  id="outputField" style="max-width: 90%;" >
             <div class="card-header">Result</div>
             <div class="card-body">
               <h4 class="card-title">{{status}}</h4>
@@ -54,7 +69,8 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    
+        
+<script src="js/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="js/client.js"></script>
   </body>
 </html>

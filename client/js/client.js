@@ -5,11 +5,24 @@ const err= "card text-white bg-danger mb-3";
 
 var app1=angular.module('app1',[]);
 
-//angular.element(document.querySelector("#outputField")).addClass(idle);
+//Ace code editor part
+const editor= ace.edit("editor");
+editor.setTheme("ace/theme/monokai");
+editor.session.setMode("ace/mode/python");
+
+
+//angular
+angular.element(document.querySelector("#outputField")).addClass(idle);
 
 app1.controller("contr1",function($scope,$http){
-    $scope.postdata=function(lang,code){
+    $scope.postdata=function(){
+        var lang=$scope.lang;
+        if(lang==undefined){
+            alert("Please select a language");
+            return;
+        }
         $scope.class=pending;
+        var code=editor.getValue();
         var data={
             lang:lang,
             code:code
@@ -24,7 +37,7 @@ app1.controller("contr1",function($scope,$http){
             let intervalId = setInterval(() => {
                 const result=$http.get("/status",{params:{id:runData.jobId}}).then(function(response){
                     console.log(response);
-                    const {job,success,error}=response.data;
+                    const {job,success}=response.data;
                     if(success){
                         const{status:jobStatus,output:jobOutput}=job;
                         if(jobStatus=="pending"){
@@ -38,9 +51,11 @@ app1.controller("contr1",function($scope,$http){
                         else{
                             $scope.class=err;
                             $scope.status="error";
-                            console.error(error);
-                            $scope.output=jobOutput;
+                            var errOutput=JSON.parse(jobOutput);
+                            console.log(errOutput);
+                            $scope.output=errOutput.stderr;
                         }
+
                         clearInterval(intervalId);
                     }
                     else{
