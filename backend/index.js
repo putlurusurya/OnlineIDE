@@ -10,7 +10,6 @@ const fs=require("fs");
 
 const {exec}=require("child_process");
 
-const Queue = require('bull');
 
 //Mongoose connect to mongodb
 const mongoose=require("mongoose");
@@ -102,6 +101,7 @@ const executeCpp = (filepath) => {
     );
   });
 };
+
 const executePy = (filepath) => {
     return new Promise((resolve, reject) => {
       exec(
@@ -114,39 +114,6 @@ const executePy = (filepath) => {
       );
     });
   };
-
-//creating and adding to queues
-const jobQueue = new Queue('job-runner-queue');
-const addToQueue= async (jobId) => {
-  jobQueue.add({
-    id: jobId,
-  });
-  //console.log(jobId);
-};
-//creating process in queue
-NUM_WORKERS=6;
-jobQueue.process(NUM_WORKERS,async ({data})=>{
-    jobId=data.id;
-    const job=await Job.findById(data.id);
-    if(job==undefined){
-      throw Error("job not found");
-    }
-    console.log("Fetched job",job);
-    try{
-      //console.log(job);
-      //console.log(job);
-    }
-    catch{
-      
-      //console.log(job);
-    }
-});
-
-jobQueue.on('failed',(error)=>{
-    console.log(error.data.id,"failed",error.failedReason);
-});
-
-
 
 app.use(express.static(__dirname + '/../client'));
 
@@ -187,6 +154,8 @@ app.post('/run',async (req,res)=>{
       const filepath=await generateFile(lang,code);
       job=await new Job({lang,filepath}).save();
       const jobId=job["_id"];
+
+      //addToQueue(jobId);
       console.log("job ide extracted is :",jobId);
       res.status(201).json({success:true,jobId});
       var output;

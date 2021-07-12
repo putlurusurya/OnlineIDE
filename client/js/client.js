@@ -7,14 +7,53 @@ var app1=angular.module('app1',[]);
 
 //Ace code editor part
 const editor= ace.edit("editor");
-editor.setTheme("ace/theme/monokai");
+editor.setTheme("ace/theme/dracula");
 editor.session.setMode("ace/mode/python");
-
 
 //angular
 angular.element(document.querySelector("#outputField")).addClass(idle);
 
 app1.controller("contr1",function($scope,$http){
+    $scope.lang="choose your language";
+    //change themes
+    $scope.changeToMonokai=function(){
+        editor.setTheme("ace/theme/monokai");
+    }
+    $scope.changeToDracula=function(){
+        editor.setTheme("ace/theme/dracula");
+    }
+    $scope.changeToEclipse=function(){
+        editor.setTheme("ace/theme/eclipse");
+    }
+    $scope.changeToGithub=function(){
+        editor.setTheme("ace/theme/github");
+    }
+    $scope.changeToSolarD=function(){
+        editor.setTheme("ace/theme/solarized_dark");
+    }
+    $scope.changeToSolarL=function(){
+        editor.setTheme("ace/theme/solarized_light");
+    }
+    $scope.changeToXcode=function(){
+        editor.setTheme("ace/theme/xcode");
+    }
+
+    //change Language
+    $scope.changeToCpp=function(){
+        $scope.lang="cpp";
+        editor.session.setMode("ace/mode/c_cpp");
+    }
+    $scope.changeToPython=function(){
+        $scope.lang="py";
+        editor.session.setMode("ace/mode/python");
+    }
+    $scope.changeToJava=function(){
+        $scope.lang="java";
+        editor.session.setMode("ace/mode/java");
+    }
+
+
+    //function to post code and recieve response
     $scope.postdata=function(){
         var lang=$scope.lang;
         if(lang==undefined){
