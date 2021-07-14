@@ -4,99 +4,67 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://bootswatch.com/5/morph/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <title>Online IDE</title>
-    <style type="text/css" media="screen">
-        #parent {
-            text-align:center;
-            height:400px;
-            width:100%;
-        }
-        #editor{
-          position: relative;
-          top:5%;
-          height: 90%;
-          width: 90%;
-          bottom: 5%;
-          left: 5%;
-          right: 5%;  
-        }
-        #textOptions {
-            text-align:center;
-            height:90px;
-            width:90%;
-        }
-       #langSelect {
-          float: left;
-          height: 98%;
-          width: 50%;
-          top: 1%;
-          bottom: 1%;
-       }
-       #themeSelect {
-          float: right;
-          height: 98%;
-          width: 50%;
-          top: 1%;
-          bottom: 1%;
-       }
-    </style>
+    <title>Stranger Codes</title>
+    
   </head>
   <body>
     <center>
         <div ng-app="app1" ng-controller="contr1">
           <div>
-            <h1>Online IDE</h1>
-            <div class="form-group">
-                <div id="textOptions">
-                    <div id="langSelect">
-                      <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          {{lang}}
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                          <button class="dropdown-item" type="button" ng-click="changeToCpp()" >C / C++</button>
-                          <button class="dropdown-item" type="button" ng-click="changeToPython()">python</button>
-                          <button class="dropdown-item" type="button" ng-click="changeToJava()">Java</button>
-                        </div>
-                      </div>
-                    </div>
-                  <div id="themeSelect">
-                    <div class="dropdown">
-                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Change Theme
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                        <button class="dropdown-item" type="button" ng-click="changeToMonokai()" >Monokai</button>
-                        <button class="dropdown-item" type="button" ng-click="changeToDracula()">Dracula</button>
-
-                        <button class="dropdown-item" type="button" ng-click="changeToEclipse()">Eclipse</button>
-
-                        <button class="dropdown-item" type="button" ng-click="changeToGithub()">Github</button>
-
-                        <button class="dropdown-item" type="button" ng-click="changeToSolarD()">Solarrized-dark</button>
-
-                        <button class="dropdown-item" type="button" ng-click="changeToSolarL()">Solarrized-light</button>
-
-                        <button class="dropdown-item" type="button" ng-click="changeToDracula()">xcode</button>
-                      </div>
+            <div id="strangerCodes">
+              <h1>Stranger Codes</h1>
+            </div>
+            
+            <div class="form-group" id="form-group">
+              <div id="textOptions">
+                <div id="langSelect">
+                  <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      {{lang}}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                      <button class="dropdown-item" type="button" ng-click="changeToCpp()" >C / C++</button>
+                      <button class="dropdown-item" type="button" ng-click="changeToPython()">python</button>
+                      <button class="dropdown-item" type="button" ng-click="changeToJava()">Java</button>
                     </div>
                   </div>
                 </div>
+                  
+                <div id="themeSelect">
+                  <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Change Theme
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                      <button class="dropdown-item" type="button" ng-click="changeToMonokai()" >Monokai</button>
+                      <button class="dropdown-item" type="button" ng-click="changeToDracula()">Dracula</button>
+
+                      <button class="dropdown-item" type="button" ng-click="changeToEclipse()">Eclipse</button>
+
+                      <button class="dropdown-item" type="button" ng-click="changeToGithub()">Github</button>
+
+                      <button class="dropdown-item" type="button" ng-click="changeToSolarD()">Solarrized-dark</button>
+
+                      <button class="dropdown-item" type="button" ng-click="changeToSolarL()">Solarrized-light</button>
+
+                      <button class="dropdown-item" type="button" ng-click="changeToDracula()">xcode</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div id="parent">
               <div id="editor">print("Hello World")</div>
             </div>
             
-            <div>
-              <input type="button" class="btn btn-secondary"  value="submit" ng-click="postdata(lang,code)"/><br></br>
-          
-            </div>
-
+          </div>
+          <div>
+            <input type="button" class="btn btn-secondary"  value="submit" ng-click="postdata(lang,code)"/><br></br>
           </div>
           <div ng-class="class"  id="outputField" style="max-width: 90%;" >
             <div class="card-header">Result</div>
@@ -105,14 +73,60 @@
               <p class="card-text">{{output}}</p>
             </div>
           </div>
+          <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+          <div class="form-box " id="myDIV">
+            <div class="test">
+              <div ng-show="chatMessages" class="chat-form-container">
+                <div id="leaveBox">
+
+                <button id="leave" ng-click="leaveRoom()" class="btn btn-outline-danger"> Leave </button>
+                </div>
+                  <div id="parentMessageForm">
+                    <div id="messagesHolder">
+                      <p ng-repeat="msgs in messages">{{msgs}}</p>
+                    </div>
+                    <form id="chat-form" ng-submit="sendMessage()">
+                      <input
+                        id="msg"
+                        type="text"
+                        class="form-control"
+                        placeholder="Enter Message"
+                        required
+                        autocomplete="off"
+                        ng-model="msgContent"
+                      />
+                      <button id="msgSend" class="btn btn-outline-info"> Send</button>
+                    </form>
+                  </div>
+              </div>
+                <div class="chatRooms" ng-show="chatRoomsMenu" id="chatRooms">
+                  <div class="joinRoom" id="CreateOrjoinRoom">
+                    <label for="userName"  class="form-label mt-4">Enter Name</label>
+                    <input type="name" ng-model="userName" class="form-control" id="userName" aria-describedby="emailHelp" placeholder="Enter name">
+      
+                    <button type="button" ng-click="createRoom()"" id="createRoomButton" class="btn btn-primary">Create Room</button>
+                    <h5>Or</h5>
+                    <label for="roomId" class="form-label mt-4">Enter Room ID to join</label>
+                    <input type="name" ng-model="roomId" class="form-control" id="roomId" aria-describedby="emailHelp" placeholder="Enter room ID">
+                    <button type="button" ng-click="joinRoom()" class="btn btn-primary">Join Room</button>
+                  </div>
+                </div>
+                
+            </div>
+          
+          </div>
+          <button type="button" class="btn btn-primary" id="floating-btn" ng-click="showForm()">
+            
+          </button>
+      
         </div>
-        
             
     </center>
 
     <!-- Optional JavaScript -->
     
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

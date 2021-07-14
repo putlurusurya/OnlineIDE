@@ -1,0 +1,157 @@
+#strangerCodes{
+    text-align:center;
+      top: 10%;
+      height:80px;
+      width:100%;
+      bottom: 10%;
+  }
+  
+
+  #chatRooms {
+      text-align:center;
+      height:275px;
+      width:100%;
+      bottom: 5%;
+      top: 5%;
+  }
+  #cjModal {
+  float: left;
+    height: 100%;
+    width: 100%;
+    bottom: 5%;
+ }
+  #parent {
+      text-align:center;
+      height:420px;
+      width:100%;
+  }
+  #editor{
+    position: relative;
+    top:5%;
+    height: 90%;
+    width: 90%;
+    bottom: 5%;
+    left: 5%;
+    right: 5%;  
+  }
+  #textOptions {
+      text-align:center;
+      height:50px;
+      width:90%;
+      
+  }
+ #langSelect {
+    float: left;
+    height: 98%;
+    width: 50%;
+    top: 1%;
+    bottom: 1%;
+ }
+ 
+ #themeSelect {
+    float: right;
+    height: 98%;
+    width: 50%;
+    top: 1%;
+    bottom: 1%;
+ }
+ 
+ 
+ #myToast {
+  position: absolute; 
+  bottom: 0; 
+  right: 0;
+ }
+
+ #chat-form{
+   position: absolute;
+   bottom: 0;
+ }
+ #leaveBox{
+  position: absolute;
+  text-align:center;
+  top: 0;
+  height: 50px;
+  width: 100%;
+}
+
+#leave{
+  position: absolute;
+  top:0;
+}
+
+
+  
+  #floating-btn {
+    background: #0940f5;
+    height: 50px;
+    width: 20px;
+    color: #ffffff;
+    font-size: 40px;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    transition: background-color 0.25s ease-out, box-shadow 0.25s ease-out;
+    cursor: pointer;
+  }
+  #floating-btn:hover {
+    box-shadow: 0 4px 5px -2px rgba(0,0,0,.2), 0 7px 10px 1px rgba(0,0,0,.14), 0 2px 16px 1px rgba(0,0,0,.12);
+  }
+  
+  
+  
+  #floating-btn i {
+    transition: transform 0.25s cubic-bezier(.4, 0, .2, 1);
+  }
+  
+  #floating-btn.clicked i {
+    transform: rotate(315deg);
+  }
+  
+  
+  .form-box {
+    margin: 16px auto;
+    
+    font-size: 16px;
+    border-radius: 9px;
+    position: fixed;
+    opacity: 0;
+    overflow: hidden;
+    bottom: 0;
+    right: 10px;
+    transform: translate(-50%,-50%);
+    width: 30px;
+    height: 30px;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    box-sizing: border-box;
+    background-color: #f5f5f7;
+    transition: all .25s ease-in-out;
+  }
+  
+  .form-box.open {
+    transform: translate(10px, -70px);
+    z-index: 9999;
+    height: 490px;
+    width: 366px;
+    opacity: 1;
+  }
+  
+  .test{
+    padding-top: 25px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 27px;
+    margin-left: 37px;
+    margin-right: 37px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 20px;
+  
+  }
+  

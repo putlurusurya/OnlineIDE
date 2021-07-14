@@ -10,14 +10,24 @@ const fs=require("fs");
 
 const {exec}=require("child_process");
 
+const http = require('http').createServer(app)
+
+const io=require("socket.io")(http);
+
 
 //Mongoose connect to mongodb
 const mongoose=require("mongoose");
+const { Socket } = require("dgram");
 
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 
 const port=process.env.PORT || 3000;
+
+http.listen(port,()=>{
+  console.log(`Listening to port ${port}`);
+});
+
 
 mongoose.connect('mongodb+srv://Fidistar:9912411309@cluster0.bcla1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', 
 {useNewUrlParser: true, useUnifiedTopology: true},(err)=>{
@@ -115,11 +125,14 @@ const executePy = (filepath) => {
     });
   };
 
+
+
+
 app.use(express.static(__dirname + '/../client'));
 
-app.listen(port,()=>{
-    console.log(`Listening to port ${port}`);
-});
+
+
+
 
 
 // routes
@@ -180,4 +193,41 @@ app.post('/run',async (req,res)=>{
       await job.save();
       return res.status(500).json({success:false,err:JSON.stringify(err)});
     }
+});
+
+// socket run when client is connected
+
+io.on("connection",(socket)=>{
+  let userId;
+  console.log("a new user Connected.....");
+  socket.on("createRoom",(data)=>{
+    socket.roomId=data.id;
+    socket.userName=data.name;
+    socket.join(data.id);
+
+    console.log(`room with id: ${data.id} is created`);
+  });
+  socket.on("joinRoom",(data)=>{
+    socket.roomId=data.id;
+    socket.userName=data.name;
+    socket.join(data.id);
+    console.log(`${data.name} joined the room`);
+    socket.broadcast.to(data.id).emit('message',{msg:`${data.name} entered the chat`});
+  });
+  
+  socket.on("chatMessage",(data)=>{
+    socket.broadcast.to(socket.roomId).emit('message',data);
+  });
+  socket.on("leaveRoom",()=>{
+    let rid=socket.roomId;
+    let un=socket.userName;
+    socket.broadcast.to(rid).emit('message',{msg:`${un} left the chat`});
+    socket.leave(rid);
+  })
+  socket.on("disconnect",()=>{
+
+    if(socket.roomId!=undefined){
+      socket.to(socket.roomId).emit("userLeft",{name:socket.userName});
+    }
+  });
 });
