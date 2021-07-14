@@ -129,6 +129,7 @@ app1.controller("contr1",["$scope","$http","$timeout","socket",function($scope,$
         
 
         const roomId=generateRoomId();
+        $scope.messages.push(`your roomID is ${roomId}`);
         const username=$scope.userName;
         console.log(roomId);
 
@@ -261,6 +262,7 @@ app1.controller("contr1",["$scope","$http","$timeout","socket",function($scope,$
         });
     }
 }]);
+
 
 
 
