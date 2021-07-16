@@ -122,6 +122,7 @@ app1.controller("contr1",["$scope","$http","$timeout","socket",function($scope,$
 
 
     $scope.connectedUsers=[];
+    $scope.currUser="Change User";
     $scope.alerts=[];
     $scope.chatRoomsMenu=true;
     $scope.chatMessages=false;
@@ -197,6 +198,7 @@ app1.controller("contr1",["$scope","$http","$timeout","socket",function($scope,$
     // leave room
     $scope.leaveRoom=function(){
         $scope.messages=[];
+        $scope.currUser="Change User"
         $scope.connectedUsers=[];
         $scope.chatRoomsMenu=true;
         $scope.chatMessages=false;
@@ -222,6 +224,7 @@ app1.controller("contr1",["$scope","$http","$timeout","socket",function($scope,$
     $scope.getCode=function(id){ 
         userCode=id;
         let tempdata=$scope.connectedUsers.filter(u=> u.id==id);
+        $scope.currUser=tempdata[0].name;
         editor2.setValue(tempdata[0].code);
     }
     //change Language
