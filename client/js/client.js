@@ -7,10 +7,8 @@ var app1=angular.module('app1',[]);
 
 
 // service to handle socket.io
-
+const socket = io.connect();
 app1.factory('socket', ['$rootScope', function ($rootScope) {
-    var socket = io.connect();
-  
     return {
       on: function (eventName, callback) {
         function wrapper() {
@@ -50,7 +48,16 @@ app1.factory('socket', ['$rootScope', function ($rootScope) {
 const editor= ace.edit("editor");
 editor.setTheme("ace/theme/dracula");
 editor.session.setMode("ace/mode/python");
+editor.setShowPrintMargin(false);
 
+const editor2=ace.edit("editor2");
+editor2.setTheme("ace/theme/dracula");
+editor2.session.setMode("ace/mode/python");
+editor2.setShowPrintMargin(false);
+editor2.setReadOnly(true);
+
+// update code in other users
+var roomID="notInRoom";
 
 
 const chatState = {
@@ -67,27 +74,58 @@ const generateRoomId = () => {
     }
     return result;
 }
+editor.on("change",()=>{
+   
+    socket.emit("updateCode",{id:socket.id,code:editor.getValue()});
+    
+});
 
+    
+let userCode="none";
 
 //angular
+
 angular.element(document.querySelector("#outputField")).addClass(idle);
 
 app1.controller("contr1",["$scope","$http","$timeout","socket",function($scope,$http,$timeout,socket){
     // socket functions
+    
     socket.on("userLeft",(data)=>{
         console.log(`user ${data.name} left`);
     });
-    socket.on("message",(data)=>{
+    socket.on("joinmessage",(data)=>{
         console.log(data.msg);
         $scope.messages.push(data.msg);
     });
+    socket.on("message",(data)=>{
+        console.log(data.msg);
+        $scope.messages.push(`${data.name}: ${data.msg}`);
+    });
+    socket.on("addContacts",(data)=>{
+        data.forEach(user => {
+            let tempdata={id:user.id,name:user.name,code:"print(\"Hello World\")"};
+            $scope.connectedUsers.push(tempdata);
+        });
+        console.log($scope.connectedUsers);
+    });
+    socket.on("deleteContact",(data)=>{
+        $scope.connectedUsers=$scope.connectedUsers.filter(u=> u.id!=data.id);
+    });
+    socket.on("changeCode",(data)=>{
+        if(data.id==userCode){
+            editor2.setValue(data.code);
+        }
+        let index=$scope.connectedUsers.findIndex(u=> u.id==id);
+        $scope.connectedUsers[index].code=data.code;
+        
+    });
 
 
-
-
+    $scope.connectedUsers=[];
     $scope.alerts=[];
     $scope.chatRoomsMenu=true;
     $scope.chatMessages=false;
+    $scope.showEditor2=false;
     $scope.lang="py";
     $scope.messages=[];
     //change themes
@@ -116,7 +154,7 @@ app1.controller("contr1",["$scope","$http","$timeout","socket",function($scope,$
     $scope.sendMessage=function(){
         const msgContent=$scope.msgContent;
         $scope.msgContent=undefined;
-        $scope.messages.push(msgContent);
+        $scope.messages.push(`you: ${msgContent}`);
         socket.emit("chatMessage",{msg:msgContent});
     }
 
@@ -127,8 +165,9 @@ app1.controller("contr1",["$scope","$http","$timeout","socket",function($scope,$
             return;
         }
         
-
+        $scope.showEditor2=true;
         const roomId=generateRoomId();
+        roomID=roomId;
         $scope.messages.push(`your roomID is ${roomId}`);
         const username=$scope.userName;
         console.log(roomId);
@@ -147,6 +186,8 @@ app1.controller("contr1",["$scope","$http","$timeout","socket",function($scope,$
         }
         const roomId=$scope.roomId;
         const username=$scope.userName;
+        $scope.showEditor2=true;
+        roomID=roomId;
         $scope.roomId=undefined;
         $scope.userName=undefined;
         $scope.chatRoomsMenu=false;
@@ -156,10 +197,12 @@ app1.controller("contr1",["$scope","$http","$timeout","socket",function($scope,$
     // leave room
     $scope.leaveRoom=function(){
         $scope.messages=[];
+        $scope.connectedUsers=[];
         $scope.chatRoomsMenu=true;
         $scope.chatMessages=false;
+        $scope.showEditor2=false;
+        roomID="notInRoom";
         socket.emit("leaveRoom");
-
     }
 
     //show form
@@ -175,7 +218,12 @@ app1.controller("contr1",["$scope","$http","$timeout","socket",function($scope,$
         }
       }
       
-
+    //
+    $scope.getCode=function(id){ 
+        userCode=id;
+        let tempdata=$scope.connectedUsers.filter(u=> u.id==id);
+        editor2.setValue(tempdata[0].code);
+    }
     //change Language
     $scope.changeToCpp=function(){
         $scope.lang="cpp";
@@ -262,7 +310,6 @@ app1.controller("contr1",["$scope","$http","$timeout","socket",function($scope,$
         });
     }
 }]);
-
 
 
 

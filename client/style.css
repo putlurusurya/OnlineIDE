@@ -25,6 +25,7 @@
       height:420px;
       width:100%;
   }
+  
   #editor{
     position: relative;
     top:5%;
@@ -34,9 +35,24 @@
     left: 5%;
     right: 5%;  
   }
+  #parent2 {
+    text-align:center;
+    height:420px;
+    width:100%;
+}
+
+#editor2{
+  position: relative;
+  top:5%;
+  height: 90%;
+  width: 90%;
+  bottom: 5%;
+  left: 5%;
+  right: 5%;  
+}
   #textOptions {
       text-align:center;
-      height:50px;
+      height:80px;
       width:90%;
       
   }
@@ -111,8 +127,12 @@
   #floating-btn.clicked i {
     transform: rotate(315deg);
   }
-  
-  
+  #tabsContainer{
+    text-align:center;
+    height:50px;
+    width:90%;
+     
+  }
   .form-box {
     margin: 16px auto;
     

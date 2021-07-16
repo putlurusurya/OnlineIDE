@@ -19,49 +19,48 @@
             <div id="strangerCodes">
               <h1>Stranger Codes</h1>
             </div>
-            
-            <div class="form-group" id="form-group">
-              <div id="textOptions">
-                <div id="langSelect">
-                  <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      {{lang}}
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                      <button class="dropdown-item" type="button" ng-click="changeToCpp()" >C / C++</button>
-                      <button class="dropdown-item" type="button" ng-click="changeToPython()">python</button>
-                      <button class="dropdown-item" type="button" ng-click="changeToJava()">Java</button>
-                    </div>
+            <div id="textOptions">
+              <div id="langSelect">
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{lang}}
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    <button class="dropdown-item" type="button" ng-click="changeToCpp()" >C / C++</button>
+                    <button class="dropdown-item" type="button" ng-click="changeToPython()">python</button>
+                    <button class="dropdown-item" type="button" ng-click="changeToJava()">Java</button>
                   </div>
                 </div>
-                  
-                <div id="themeSelect">
-                  <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Change Theme
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                      <button class="dropdown-item" type="button" ng-click="changeToMonokai()" >Monokai</button>
-                      <button class="dropdown-item" type="button" ng-click="changeToDracula()">Dracula</button>
+              </div>
+                
+              <div id="themeSelect">
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Change Theme
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    <button class="dropdown-item" type="button" ng-click="changeToMonokai()" >Monokai</button>
+                    <button class="dropdown-item" type="button" ng-click="changeToDracula()">Dracula</button>
 
-                      <button class="dropdown-item" type="button" ng-click="changeToEclipse()">Eclipse</button>
+                    <button class="dropdown-item" type="button" ng-click="changeToEclipse()">Eclipse</button>
 
-                      <button class="dropdown-item" type="button" ng-click="changeToGithub()">Github</button>
+                    <button class="dropdown-item" type="button" ng-click="changeToGithub()">Github</button>
 
-                      <button class="dropdown-item" type="button" ng-click="changeToSolarD()">Solarrized-dark</button>
+                    <button class="dropdown-item" type="button" ng-click="changeToSolarD()">Solarrized-dark</button>
 
-                      <button class="dropdown-item" type="button" ng-click="changeToSolarL()">Solarrized-light</button>
+                    <button class="dropdown-item" type="button" ng-click="changeToSolarL()">Solarrized-light</button>
 
-                      <button class="dropdown-item" type="button" ng-click="changeToDracula()">xcode</button>
-                    </div>
+                    <button class="dropdown-item" type="button" ng-click="changeToDracula()">xcode</button>
                   </div>
                 </div>
               </div>
             </div>
+          
+            
+            
             <div id="parent">
               <div id="editor">print("Hello World")</div>
             </div>
-            
           </div>
           <div>
             <input type="button" class="btn btn-secondary"  value="submit" ng-click="postdata(lang,code)"/><br></br>
@@ -73,6 +72,24 @@
               <p class="card-text">{{output}}</p>
             </div>
           </div>
+          <div ng-show="showEditor2">
+            <div id="userSelect">
+              <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Change user
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                  <div ng-repeat="user in connectedUsers" >
+                    <button class="dropdown-item" type="button"  ng-click="getCode(user.id)" >{{user.name}}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="parent2" >
+              <div id="editor2">print("Hello World")</div>
+            </div>
+          </div>
+          
           <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
           <div class="form-box " id="myDIV">
             <div class="test">
@@ -104,7 +121,7 @@
                     <label for="userName"  class="form-label mt-4">Enter Name</label>
                     <input type="name" ng-model="userName" class="form-control" id="userName" aria-describedby="emailHelp" placeholder="Enter name">
       
-                    <button type="button" ng-click="createRoom()"" id="createRoomButton" class="btn btn-primary">Create Room</button>
+                    <button type="button" ng-click="createRoom()" id="createRoomButton" class="btn btn-primary">Create Room</button>
                     <h5>Or</h5>
                     <label for="roomId" class="form-label mt-4">Enter Room ID to join</label>
                     <input type="name" ng-model="roomId" class="form-control" id="roomId" aria-describedby="emailHelp" placeholder="Enter room ID">

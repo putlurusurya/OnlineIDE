@@ -195,35 +195,66 @@ app.post('/run',async (req,res)=>{
     }
 });
 
+//connected clients
+const connectedUsers = new Map();
+
 // socket run when client is connected
 
 io.on("connection",(socket)=>{
-  let userId;
+  //let userId;
   console.log("a new user Connected.....");
   socket.on("createRoom",(data)=>{
     socket.roomId=data.id;
     socket.userName=data.name;
+    connectedUsers.set(data.id,[]);
+    connectedUsers.get(data.id).push({id:socket.id,name:data.name});
+    let userslist=connectedUsers.get(data.id);
+    socket.emit("addContacts",userslist);
     socket.join(data.id);
-
+    console.log("connected users: ",connectedUsers);
     console.log(`room with id: ${data.id} is created`);
   });
   socket.on("joinRoom",(data)=>{
+    const room = io.of("/").adapter.rooms.get(data.id)
+    
+    if(room==undefined || room.size>=4){
+      socket.emit("message",{msg:"Room is full or does not exist"});
+      return;
+    }
     socket.roomId=data.id;
     socket.userName=data.name;
+    connectedUsers.get(data.id).push({id:socket.id,name:data.name});
     socket.join(data.id);
+    console.log("socket id: ",socket.id);
     console.log(`${data.name} joined the room`);
-    socket.broadcast.to(data.id).emit('message',{msg:`${data.name} entered the chat`});
+    let userslist=connectedUsers.get(data.id);
+    socket.emit("addContacts",userslist);
+    socket.broadcast.to(data.id).emit('addContacts',[{id:socket.id,name:data.name}]);
+    socket.broadcast.to(data.id).emit('joinmessage',{msg:`${data.name} entered the chat`});
   });
   
+  socket.on("updateCode",(data)=>{
+    socket.to(socket.roomId).emit("changeCode",data);
+  });
+
   socket.on("chatMessage",(data)=>{
-    socket.broadcast.to(socket.roomId).emit('message',data);
+    socket.broadcast.to(socket.roomId).emit('message',{name:socket.userName,msg:data.msg});
   });
   socket.on("leaveRoom",()=>{
     let rid=socket.roomId;
     let un=socket.userName;
+    let userslist=connectedUsers.get(rid);
+    userslist=userslist.filter(u=> u.id!=socket.id);
+    if(userslist.length==0){
+      connectedUsers.delete(rid);
+    }
+    else{
+      connectedUsers.set(rid,userslist);
+    }
+    socket.broadcast.to(rid).emit('deleteContact',{id:socket.id});
     socket.broadcast.to(rid).emit('message',{msg:`${un} left the chat`});
     socket.leave(rid);
-  })
+  });
   socket.on("disconnect",()=>{
 
     if(socket.roomId!=undefined){
