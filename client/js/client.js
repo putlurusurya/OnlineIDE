@@ -115,7 +115,7 @@ app1.controller("contr1",["$scope","$http","$timeout","socket",function($scope,$
         if(data.id==userCode){
             editor2.setValue(data.code);
         }
-        let index=$scope.connectedUsers.findIndex(u=> u.id==id);
+        let index=$scope.connectedUsers.findIndex(u=> u.id==data.id);
         $scope.connectedUsers[index].code=data.code;
         
     });
@@ -310,6 +310,7 @@ app1.controller("contr1",["$scope","$http","$timeout","socket",function($scope,$
         });
     }
 }]);
+
 
 
 
