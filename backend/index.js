@@ -140,7 +140,7 @@ const executeJava = (filepath) => {
   const folderpath=filepath.substring(0, filepath.lastIndexOf('/'));
   return new Promise((resolve, reject) => {
     exec(
-      `cd ${folderpath} && javac ${jobId}.java && java Main`,
+      `unset JAVA_TOOL_OPTIONS && cd ${folderpath} && javac ${jobId}.java && java Main`,
       (error, stdout, stderr) => {
         error && reject({ error, stderr });
         stderr && reject(stderr);
