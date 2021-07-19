@@ -89,7 +89,17 @@ const generateFile = async(format,content)=>{
   const jobId= uuid();
   console.log("jobid in generate: ",jobId);
   const filename= `${jobId}.${format}`;
-  const filepath=path.join(codesDirectory,filename);
+  let filepath;
+  if(format=='java'){
+    let tempPath=path.join(codesDirectory,jobId);
+    if (!fs.existsSync(tempPath)) {
+      fs.mkdirSync(tempPath, { recursive: true });
+    }
+    filepath=path.join(tempPath,filename);
+  }
+  else{
+    filepath=path.join(codesDirectory,filename);
+  }
   await fs.writeFileSync(filepath,content);
   return filepath;
 }
@@ -126,9 +136,11 @@ const executePy = (filepath) => {
   };
 
 const executeJava = (filepath) => {
+  const jobId = path.basename(filepath).split(".")[0];
+  const folderpath=filepath.substring(0, filepath.lastIndexOf('/'));
   return new Promise((resolve, reject) => {
     exec(
-      `unset JAVA_TOOL_OPTIONS && java ${filepath}`,
+      `unset JAVA_TOOL_OPTIONS && cd ${folderpath} && javac ${jobId}.java && java Main`,
       (error, stdout, stderr) => {
         error && reject({ error, stderr });
         stderr && reject(stderr);
