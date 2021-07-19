@@ -44,7 +44,7 @@ const JobSchema = mongoose.Schema(
     lang: {
       type: String,
       required: true,
-      enum: ["cpp","py"]
+      enum: ["cpp","py","java"]
     },
     filepath: {
       type: String,
@@ -102,7 +102,7 @@ const executeCpp = (filepath) => {
 
   return new Promise((resolve, reject) => {
     exec(
-      `g++ ${filepath} -o ${outPath} && cd ${outputPath} && ./${jobId}.out`,
+      `g++ ${filepath} -o ${outPath} && cd ${outputPath} && ./${jobId}.out `,
       (error, stdout, stderr) => {
         error && reject({ error, stderr });
         stderr && reject(stderr);
@@ -125,14 +125,22 @@ const executePy = (filepath) => {
     });
   };
 
+const executeJava = (filepath) => {
+  return new Promise((resolve, reject) => {
+    exec(
+      `java ${filepath}`,
+      (error, stdout, stderr) => {
+        error && reject({ error, stderr });
+        stderr && reject(stderr);
+        resolve(stdout);
+      }
+    );
+  });
+};
 
 
 
 app.use(express.static(__dirname + '/../client'));
-
-
-
-
 
 
 // routes
@@ -172,13 +180,18 @@ app.post('/run',async (req,res)=>{
       console.log("job ide extracted is :",jobId);
       res.status(201).json({success:true,jobId});
       var output;
+      console.log(filepath);
       job["startedAt"]=new Date();
-      if(job.lang==='cpp'){
+      if(job.lang=='cpp'){
           output=await executeCpp(filepath)
       }
       if(job.lang=='py'){
           output=await executePy(filepath);
       }
+      if(job.lang=='java'){
+          output=await executeJava(filepath);
+      }
+      
       //console.log({filepath,output});
       job["completedAt"]=new Date();
       job["status"]="completed";

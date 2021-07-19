@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="shortcut icon" href="#">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://bootswatch.com/5/morph/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"></script>
@@ -94,14 +95,14 @@
           <div class="form-box " id="myDIV">
             <div class="test">
               <div ng-show="chatMessages" class="chat-form-container">
-                <div id="leaveBox">
+                <div id="menubox">
 
                 <button id="leave" ng-click="leaveRoom()" class="btn btn-outline-danger"> Leave </button>
                 </div>
                   <div id="parentMessageForm">
                     <div id="messagesHolder">
-                      <p ng-repeat="msgs in messages">{{msgs}}</p>
-                    </div>
+                      <p ng-repeat="msgs in messages track by $index">{{msgs}}</p>
+                    </div >
                     <form id="chat-form" ng-submit="sendMessage()">
                       <input
                         id="msg"
@@ -111,8 +112,10 @@
                         required
                         autocomplete="off"
                         ng-model="msgContent"
+                        width="60%"
+                        float="left"
                       />
-                      <button id="msgSend" class="btn btn-outline-info"> Send</button>
+                      <button float="right" width="40%" id="msgSend" class="btn btn-outline-info"> Send</button>
                     </form>
                   </div>
               </div>

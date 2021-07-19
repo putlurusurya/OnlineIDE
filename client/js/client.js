@@ -316,4 +316,3 @@ app1.controller("contr1",["$scope","$http","$timeout","socket",function($scope,$
 
 
 
-
