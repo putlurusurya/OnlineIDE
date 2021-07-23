@@ -88,6 +88,8 @@ let userCode="none";
 angular.element(document.querySelector("#outputField")).addClass(idle);
 
 app1.controller("contr1",["$scope","$http","$timeout","socket",function($scope,$http,$timeout,socket){
+    
+    
     // socket functions
     
     socket.on("userLeft",(data)=>{
@@ -99,7 +101,8 @@ app1.controller("contr1",["$scope","$http","$timeout","socket",function($scope,$
     });
     socket.on("message",(data)=>{
         console.log(data.msg);
-        $scope.messages.push(`${data.name}: ${data.msg}`);
+        let message={name:data.name,msg:data.msg,msgClass:"otherMessage",msgDataClass:"otherMessageData"};
+        $scope.messages.push(message);
     });
     socket.on("addContacts",(data)=>{
         data.forEach(user => {
@@ -120,6 +123,10 @@ app1.controller("contr1",["$scope","$http","$timeout","socket",function($scope,$
         
     });
 
+
+
+    let chatbox=angular.element(document.getElementById("parentMessageForm"));
+    chatbox.scrollTop = chatbox.scrollHeight;
 
     $scope.connectedUsers=[];
     $scope.currUser="Change User";
@@ -155,7 +162,8 @@ app1.controller("contr1",["$scope","$http","$timeout","socket",function($scope,$
     $scope.sendMessage=function(){
         const msgContent=$scope.msgContent;
         $scope.msgContent=undefined;
-        $scope.messages.push(`you: ${msgContent}`);
+        let message={name:"You",msg:msgContent,msgClass:"myMessage",msgDataClass:"myMessageData"}
+        $scope.messages.push(message);
         socket.emit("chatMessage",{msg:msgContent});
     }
 
@@ -169,7 +177,8 @@ app1.controller("contr1",["$scope","$http","$timeout","socket",function($scope,$
         $scope.showEditor2=true;
         const roomId=generateRoomId();
         roomID=roomId;
-        $scope.messages.push(`your roomID is ${roomId}`);
+        $scope.roomid=roomId;
+        //$scope.messages.push(`your roomID is ${roomId}`);
         const username=$scope.userName;
         console.log(roomId);
 
@@ -189,6 +198,7 @@ app1.controller("contr1",["$scope","$http","$timeout","socket",function($scope,$
         const username=$scope.userName;
         $scope.showEditor2=true;
         roomID=roomId;
+        $scope.roomid=roomID;
         $scope.roomId=undefined;
         $scope.userName=undefined;
         $scope.chatRoomsMenu=false;

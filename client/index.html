@@ -92,53 +92,62 @@
           </div>
           
           <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+          <button type="button" class="btn btn-primary" id="floating-btn" ng-click="showForm()"> </button>
+      
           <div class="form-box " id="myDIV">
             <div class="test">
+              <div class="chatRooms" ng-show="chatRoomsMenu" id="chatRooms">
+                <div class="joinRoom" id="CreateOrjoinRoom">
+                  <label for="userName"  class="form-label mt-4">Enter Name</label>
+                  <input type="name" ng-model="userName" class="form-control" id="userName" aria-describedby="emailHelp" placeholder="Enter name">
+    
+                  <button type="button" ng-click="createRoom()" id="createRoomButton" class="btn btn-primary">Create Room</button>
+                  <h5>Or</h5>
+                  <label for="roomId" class="form-label mt-4">Enter Room ID to join</label>
+                  <input type="name" ng-model="roomId" class="form-control" id="roomId" aria-describedby="emailHelp" placeholder="Enter room ID">
+                  <button type="button" ng-click="joinRoom()" class="btn btn-primary">Join Room</button>
+                </div>
+              </div>
               <div ng-show="chatMessages" class="chat-form-container">
                 <div id="menubox">
-
-                <button id="leave" ng-click="leaveRoom()" class="btn btn-outline-danger"> Leave </button>
+                  <button id="leave" ng-click="leaveRoom()" class="btn btn-outline-danger"> Leave </button>
                 </div>
-                  <div id="parentMessageForm">
-                    <div id="messagesHolder">
-                      <p ng-repeat="msgs in messages track by $index">{{msgs}}</p>
-                    </div >
-                    <form id="chat-form" ng-submit="sendMessage()">
-                      <input
-                        id="msg"
-                        type="text"
-                        class="form-control"
-                        placeholder="Enter Message"
-                        required
-                        autocomplete="off"
-                        ng-model="msgContent"
-                        width="60%"
-                        float="left"
-                      />
-                      <button float="right" width="40%" id="msgSend" class="btn btn-outline-info"> Send</button>
-                    </form>
+                <div id="roomid">
+                  <div class="alert alert-dismissible alert-info" >  
+                    {{roomid}}
                   </div>
+                </div>
+                <div id="parentMessageForm">
+                  
+                    <div id="chat" ng-repeat="msgs in messages track by $index" >
+                      <p ng-class="msgs.msgDataClass">
+                        {{msgs.name}}
+                      </p>
+                      <div ng-class="msgs.msgClass">
+                        {{msgs.msg}}
+                      </div>
+                    </div>
+                  </div >
+                  <form id="chat-form" ng-submit="sendMessage()">
+                    <input
+                      id="msg"
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter Message"
+                      required
+                      autocomplete="off"
+                      ng-model="msgContent"
+                      width="40%"
+                      float="left"
+                    />
+                    <button float="right" width="40%" id="msgSend" class="btn btn-outline-info"> Send</button>
+                  </form>
+                </div>
               </div>
-                <div class="chatRooms" ng-show="chatRoomsMenu" id="chatRooms">
-                  <div class="joinRoom" id="CreateOrjoinRoom">
-                    <label for="userName"  class="form-label mt-4">Enter Name</label>
-                    <input type="name" ng-model="userName" class="form-control" id="userName" aria-describedby="emailHelp" placeholder="Enter name">
-      
-                    <button type="button" ng-click="createRoom()" id="createRoomButton" class="btn btn-primary">Create Room</button>
-                    <h5>Or</h5>
-                    <label for="roomId" class="form-label mt-4">Enter Room ID to join</label>
-                    <input type="name" ng-model="roomId" class="form-control" id="roomId" aria-describedby="emailHelp" placeholder="Enter room ID">
-                    <button type="button" ng-click="joinRoom()" class="btn btn-primary">Join Room</button>
-                  </div>
-                </div>
-                
             </div>
           
           </div>
-          <button type="button" class="btn btn-primary" id="floating-btn" ng-click="showForm()">
-            
-          </button>
-      
+          
         </div>
             
     </center>
